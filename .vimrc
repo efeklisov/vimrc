@@ -17,6 +17,7 @@ set softtabstop=4
 set number
 set mouse=a
 set guifont=Monaco:h14
+set copyindent
 let mapleader = "-"
 
 "Folding
@@ -54,6 +55,7 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
 call plug#end()
 
 "Ultisnips
@@ -103,9 +105,11 @@ imap <c-g>s <Plug>Isurround
 
 "Custom maps
 nnoremap <leader>ev :vsplit $MYVIMRC<CR>
+nnoremap <leader>sv :source $MYVIMRC<cr>
 
 "Custom commands
 command! -nargs=* Blender :!/Applications/Blender/blender.app/Contents/MacOS/blender <args>
 command! -nargs=0 Blend :!/Applications/Blender/blender.app/Contents/MacOS/blender --background --python %
+command! -nargs=0 Blendo :!/Applications/Blender/blender.app/Contents/MacOS/blender --python %
 
 autocmd VimEnter * echom ">^.^< : config by Hova"
