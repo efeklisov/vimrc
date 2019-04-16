@@ -16,9 +16,11 @@ set expandtab
 set softtabstop=4
 set number
 set mouse=a
-set guifont=Monaco:h14
+set guifont=Monaco\ for\ Powerline:h14
+set macmeta
 set copyindent
 let mapleader = "-"
+set wrap
 
 "Folding
 set foldnestmax=10
@@ -56,6 +58,8 @@ Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
+Plug 'elzr/vim-json'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 call plug#end()
 
 "Ultisnips
@@ -82,6 +86,9 @@ set completeopt-=preview
 
 "CtrlSpace for MacVim
 nnoremap <silent><Space> :CtrlSpace o<CR>
+let g:CtrlSpaceIgnoredFiles = '\v(build)[\/]'
+let g:CtrlSpaceUseMouseAndArrowsInTerm = 1
+let g:ctrlspace_use_mouse_and_arrows = 1
 
 "Monocai MacVim
 set guioptions=
@@ -91,7 +98,7 @@ if has('gui_running')
 endif
 
 "Autoformat
-noremap <F4> :Autoformat<CR>
+nnoremap <F4> :Autoformat<CR>
 
 "Surround
 let g:surround_no_mappings = 1
@@ -104,12 +111,23 @@ imap <c-g>s <Plug>Isurround
 "-----------------
 
 "Custom maps
-nnoremap <leader>ev :vsplit $MYVIMRC<CR>
-nnoremap <leader>sv :source $MYVIMRC<cr>
+nnoremap <leader>ev :e $MYVIMRC<CR>
+nnoremap <leader>sv :source $MYVIMRC<CR>
+            \:echom "~/.vimrc is sourced"<CR>
+nnoremap <F5> :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar> :nohl <Bar> :unlet _s <CR>
+            \:echom "whitespace deleted"<CR>
 
 "Custom commands
-command! -nargs=* Blender :!/Applications/Blender/blender.app/Contents/MacOS/blender <args>
-command! -nargs=0 Blend :!/Applications/Blender/blender.app/Contents/MacOS/blender --background --python %
-command! -nargs=0 Blendo :!/Applications/Blender/blender.app/Contents/MacOS/blender --python %
+command! -nargs=* Blender :!/Applications/Blender/blender.app/Contents/MacOS/blender 
+            \<args>
+command! -nargs=? Blend :!/Applications/Blender/blender.app/Contents/MacOS/blender 
+            \-b -P % -- <args>
+command! -nargs=? Blendo :!/Applications/Blender/blender.app/Contents/MacOS/blender 
+            \-P % -- <args>
+command! -nargs=? Ls :!ls <args>
 
-autocmd VimEnter * echom ">^.^< : config by Hova"
+"Auto commands
+augroup hovagroup
+    autocmd!
+    autocmd VimEnter * echom ">^.^< : config by Hova"
+augroup END
