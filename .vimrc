@@ -16,7 +16,8 @@ set expandtab
 set softtabstop=4
 set number
 set mouse=a
-set guifont=Monaco\ for\ Powerline:h14
+set guifont=Fira\ Code:h15
+set macligatures
 set macmeta
 set copyindent
 let mapleader = "-"
@@ -59,7 +60,8 @@ Plug 'honza/vim-snippets'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'elzr/vim-json'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'scrooloose/nerdtree'
+Plug 'vim-scripts/greplace.vim'
 call plug#end()
 
 "Ultisnips
@@ -118,16 +120,19 @@ nnoremap <F5> :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar> :nohl <Bar> :
             \:echom "whitespace deleted"<CR>
 
 "Custom commands
-command! -nargs=* Blender :!/Applications/Blender/blender.app/Contents/MacOS/blender 
-            \<args>
-command! -nargs=? Blend :!/Applications/Blender/blender.app/Contents/MacOS/blender 
-            \-b -P % -- <args>
-command! -nargs=? Blendo :!/Applications/Blender/blender.app/Contents/MacOS/blender 
-            \-P % -- <args>
+command! -nargs=* Blender :!/Applications/Blender/blender.app/Contents/MacOS/blender
+            \ <args>
+command! -nargs=? Blend :!/Applications/Blender/blender.app/Contents/MacOS/blender
+            \ -b -P % -- <args>
+command! -nargs=? Blendo :!/Applications/Blender/blender.app/Contents/MacOS/blender
+            \ -P % -- <args>
 command! -nargs=? Ls :!ls <args>
+
+command! -nargs=0 NT :NERDTreeToggle
 
 "Auto commands
 augroup hovagroup
     autocmd!
     autocmd VimEnter * echom ">^.^< : config by Hova"
+    autocmd CursorMovedI * redraw!
 augroup END
