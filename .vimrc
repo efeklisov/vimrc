@@ -1,3 +1,26 @@
+"Neovim Specific
+if has('nvim')
+    set runtimepath^=~/.vim runtimepath+=~/.vim/after
+    let &packpath = &runtimepath
+    language en_US
+    set noshowcmd
+else
+"Mac Specific
+    set macligatures
+    set macmeta
+"GUI Specific
+    if has('gui_running')
+        set guifont=Fura\ Code\ Light\ Nerd\ Font\ Complete:h16
+        set background=dark
+    else
+"CLI Specific
+        set ttimeoutlen=10
+        let &t_SI.="\e[5 q" "SI = INSERT mode
+        let &t_SR.="\e[3 q" "SR = REPLACE mode
+        let &t_EI.="\e[1 q" "EI = NORMAL mode
+    endif
+endif
+
 "General
 filetype plugin indent on
 syntax on
@@ -13,20 +36,15 @@ set tabstop=4
 set shiftwidth=4
 set expandtab
 set softtabstop=4
-set number
+set number relativenumber
 set mouse=a
-set guifont=Fira\ Code\ light:h15
-set macligatures
-set macmeta
 set copyindent
 let mapleader = "-"
-set wrap
+set wrap linebreak nolist
 set cursorline
-
-"Fix cursor in Mac Term
-let &t_SI.="\e[6 q"
-let &t_SR.="\e[4 q"
-let &t_EI.="\e[2 q"
+set keymap=russian-jcukenmac
+set iminsert=0
+set imsearch=0
 
 "Folding
 set foldnestmax=10
@@ -53,8 +71,10 @@ endif
 call plug#begin('~/.vim/bundle')
 Plug 'terryma/vim-multiple-cursors'
 Plug 'Valloric/YouCompleteMe'
-Plug 'jpalardy/vim-slime'
+Plug 'scrooloose/nerdtree'
+" Plug 'ervandew/supertab'
 Plug 'vim-ctrlspace/vim-ctrlspace'
+Plug 'jupyter-vim/jupyter-vim'
 Plug 'Chiel92/vim-autoformat'
 Plug 'tikhomirov/vim-glsl'
 Plug 'ErichDonGubler/vim-sublime-monokai'
@@ -67,18 +87,12 @@ Plug 'tpope/vim-commentary'
 Plug 'elzr/vim-json'
 Plug 'vim-scripts/greplace.vim'
 Plug 'lervag/vimtex'
+Plug 'jpalardy/vim-slime'
 Plug 'neomake/neomake'
-Plug 'szw/vim-tags'
+Plug 'milkypostman/vim-togglelist'
+Plug 'shime/vim-livedown'
+Plug 'ryanoasis/vim-devicons'
 call plug#end()
-
-" set statusline+=%#warningmsg#
-" set statusline+=%{SyntasticStatuslineFlag()}
-" set statusline+=%*
-" let g:syntastic_always_populate_loc_list = 1
-" let g:syntastic_auto_loc_list = 0
-" let g:syntastic_check_on_open = 0
-" let g:syntastic_check_on_wq = 0
-" let g:syntastic_cpp_compiler_options = " -std=c++17 "
 
 "Neomake
 let g:neomake_cpp_clang_maker = {
@@ -91,6 +105,10 @@ let g:neomake_cpp_clang_maker = {
 "    \ 'args': ['-I/usr/local/include/wx-3.0'],
 "    \ }
 
+"VimSlime
+let g:slime_target = "vimterminal"
+let g:slime_python_ipython = 1
+
 "vimtex
 let g:tex_flavor = 'latex'
 
@@ -102,19 +120,7 @@ let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 "AutoPairs
 let g:AutoPairsMultilineClose = 0
 
-"Slime
-let g:slime_target = "vimterminal"
-let g:slime_python_ipython = 1
-
-"Ctags
-set tags=.tags;/
-let g:vim_tags_ignore_files = ['.gitignore']
-let g:vim_tags_main_file = '.tags'
-noremap <silent> <F3> :TagsGenerate!<CR>
-        \:echom "generating tags"<CR>
-
 "YouCompleteMe
-imap <D-Space> <Nul>
 let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
 set completeopt-=preview
 let g:ycm_min_num_of_chars_for_completion = 1
@@ -122,39 +128,58 @@ let g:ycm_show_diagnostics_ui = 0
 
 "CtrlSpace for MacVim
 nnoremap <silent><Space> :CtrlSpace o<CR>
-let g:CtrlSpaceIgnoredFiles = '\v(build|final)[\/]'
+let g:CtrlSpaceIgnoredFiles = '\v(build|final|MacVim|tests)[\/]'
 let g:CtrlSpaceUseMouseAndArrowsInTerm = 1
 let g:ctrlspace_use_mouse_and_arrows = 1
 
 "Monocai MacVim
-set guioptions=
-if has('gui_running')
-    set background=dark
-    colorscheme sublimemonokai
-endif
+colorscheme sublimemonokai
 
 "Autoformat
 nnoremap <F4> :Autoformat<CR>
 
-"Surround
-" let g:surround_no_mappings = 1
-" nmap <leader>d <Plug>Dsurround
-" nmap <leader>c <Plug>Csurround
-" nmap <leader>y <Plug>Ysurround
-" xmap <leader>v <Plug>VSurround
-" imap <c-g>s <Plug>Isurround
-
-"-----------------
+"Airline
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#keymap#enabled = 0
+let g:airline_powerline_fonts = 0
+" let g:airline_section_z = "Col:%c"
+let g:airline_section_z = "\ue0a1:%l/%L Col:%c"
+let g:Powerline_symbols='unicode'
 
 "Custom maps
-nnoremap <leader>ev :e $MYVIMRC<CR>
-nnoremap <leader>sv :source $MYVIMRC<CR>
+vnoremap <Up> gk
+vnoremap <Down> gj
+nnoremap <Up> gk
+nnoremap <Down> gj
+
+nnoremap <leader>mp :LivedownPreview<CR>
+nnoremap <leader>mk :LivedownKill<CR>
+inoremap <C-Space> <C-^>
+nnoremap <leader>ev :e ~/.vimrc<CR>
+nnoremap <leader>sv :source ~/.vimrc<CR>
             \:echom "~/.vimrc is sourced"<CR>
-nnoremap <silent> <F1> :Lexplore<CR>
+" nnoremap <leader>ev :e $MYVIMRC<CR>
+" nnoremap <leader>sv :source $MYVIMRC<CR>
+"             \:echom "~/.vimrc is sourced"<CR>
+nnoremap <silent> <F1> :NERDTreeToggle<CR>
 nnoremap <F2> :w !sudo tee % <CR>
             \:echom "forced changes to the file" <CR>
+nnoremap <leader>jc :call jupyter#Connect()<CR>
 nnoremap <F5> :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar> :nohl <Bar> :unlet _s <CR>
             \:echom "whitespace deleted"<CR>
+
+inoremap <A-2> @
+inoremap <A-3> #
+inoremap <A-4> $
+inoremap <A-5> %
+inoremap <A-6> ^
+inoremap <A-7> &
+inoremap <A-8> *
+inoremap à `
+inoremap þ ~
+inoremap ≤ <
+inoremap ≥ >
+
 "Insert from unnamed buffer
 inoremap <F6> <C-R>"
 "Tag completion
@@ -165,6 +190,8 @@ inoremap <F8> <C-X><C-]>
 inoremap <F9> <C-X><C-P>
 "Line completion
 inoremap <F10> <C-X><C-L>
+"Open error
+nnoremap <script> <silent> <F12> :call ToggleLocationList()<CR>
 
 "Custom commands
 command! -nargs=* Blender :!/Applications/Blender/blender.app/Contents/MacOS/blender
@@ -173,14 +200,10 @@ command! -nargs=? Blend :!/Applications/Blender/blender.app/Contents/MacOS/blend
             \ -b -P % -- <args>
 command! -nargs=? Blendo :!/Applications/Blender/blender.app/Contents/MacOS/blender
             \ -P % -- <args>
-command! -nargs=? Ls :!ls <args>
 
 "Auto commands
 augroup hovagroup
     autocmd!
     autocmd! BufWritePost,BufEnter * Neomake
     autocmd VimEnter * echom ">^.^< : config by Hova"
-    "if has('gui_running')
-    "    autocmd CursorMovedI * redraw!
-    "endif
 augroup END
