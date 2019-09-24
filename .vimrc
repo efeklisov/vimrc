@@ -8,8 +8,18 @@ else
 "Mac Specific
     set macligatures
     set macmeta
+
+    "Custom commands
+    command! -nargs=* Blender :!/Applications/Blender/blender.app/Contents/MacOS/blender
+                \ <args>
+    command! -nargs=? Blend :!/Applications/Blender/blender.app/Contents/MacOS/blender
+                \ -b -P % -- <args>
+    command! -nargs=? Blendo :!/Applications/Blender/blender.app/Contents/MacOS/blender
+                \ -P % -- <args>
+
 "GUI Specific
     if has('gui_running')
+        set guioptions=
         set guifont=Fura\ Code\ Light\ Nerd\ Font\ Complete:h16
         set background=dark
     else
@@ -23,7 +33,6 @@ endif
 
 "General
 filetype plugin indent on
-syntax on
 scriptencoding utf-8
 set encoding=utf-8
 set nocompatible
@@ -42,6 +51,7 @@ set copyindent
 let mapleader = "-"
 set wrap linebreak nolist
 set cursorline
+
 set keymap=russian-jcukenmac
 set iminsert=0
 set imsearch=0
@@ -54,14 +64,6 @@ set foldlevel=2
 "-----Plugins-----
 
 "VimPlug
-":PlugInstall
-" :PlugUpdate
-" :PlugClean
-" :PlugUpgrade
-" :PlugStatus
-" :PlugDiff
-" :PlugSnapshot
-
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -72,7 +74,6 @@ call plug#begin('~/.vim/bundle')
 Plug 'terryma/vim-multiple-cursors'
 Plug 'Valloric/YouCompleteMe'
 Plug 'scrooloose/nerdtree'
-" Plug 'ervandew/supertab'
 Plug 'vim-ctrlspace/vim-ctrlspace'
 Plug 'jupyter-vim/jupyter-vim'
 Plug 'Chiel92/vim-autoformat'
@@ -99,11 +100,6 @@ let g:neomake_cpp_clang_maker = {
    \ 'exe': 'clang++',
    \ 'args': ['-I/usr/local/include/wx-3.0', '-std=c++17'],
    \ }
-
-" let g:neomake_hpp_clang_maker = {
-"    \ 'exe': 'clang++',
-"    \ 'args': ['-I/usr/local/include/wx-3.0'],
-"    \ }
 
 "VimSlime
 let g:slime_target = "vimterminal"
@@ -141,8 +137,6 @@ nnoremap <F4> :Autoformat<CR>
 "Airline
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#keymap#enabled = 0
-let g:airline_powerline_fonts = 0
-" let g:airline_section_z = "Col:%c"
 let g:airline_section_z = "\ue0a1:%l/%L Col:%c"
 let g:Powerline_symbols='unicode'
 
@@ -152,15 +146,13 @@ vnoremap <Down> gj
 nnoremap <Up> gk
 nnoremap <Down> gj
 
-nnoremap <leader>mp :LivedownPreview<CR>
-nnoremap <leader>mk :LivedownKill<CR>
+nnoremap <C-A> ggVG
+vnoremap <C-C> "+y
+nnoremap <leader>ld :LivedownToggle<CR>
 inoremap <C-Space> <C-^>
 nnoremap <leader>ev :e ~/.vimrc<CR>
 nnoremap <leader>sv :source ~/.vimrc<CR>
             \:echom "~/.vimrc is sourced"<CR>
-" nnoremap <leader>ev :e $MYVIMRC<CR>
-" nnoremap <leader>sv :source $MYVIMRC<CR>
-"             \:echom "~/.vimrc is sourced"<CR>
 nnoremap <silent> <F1> :NERDTreeToggle<CR>
 nnoremap <F2> :w !sudo tee % <CR>
             \:echom "forced changes to the file" <CR>
@@ -168,17 +160,9 @@ nnoremap <leader>jc :call jupyter#Connect()<CR>
 nnoremap <F5> :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar> :nohl <Bar> :unlet _s <CR>
             \:echom "whitespace deleted"<CR>
 
-inoremap <A-2> @
-inoremap <A-3> #
-inoremap <A-4> $
-inoremap <A-5> %
-inoremap <A-6> ^
-inoremap <A-7> &
-inoremap <A-8> *
-inoremap à `
-inoremap þ ~
-inoremap ≤ <
-inoremap ≥ >
+inoremap £ #
+inoremap ™ `
+inoremap • *
 
 "Insert from unnamed buffer
 inoremap <F6> <C-R>"
@@ -193,13 +177,6 @@ inoremap <F10> <C-X><C-L>
 "Open error
 nnoremap <script> <silent> <F12> :call ToggleLocationList()<CR>
 
-"Custom commands
-command! -nargs=* Blender :!/Applications/Blender/blender.app/Contents/MacOS/blender
-            \ <args>
-command! -nargs=? Blend :!/Applications/Blender/blender.app/Contents/MacOS/blender
-            \ -b -P % -- <args>
-command! -nargs=? Blendo :!/Applications/Blender/blender.app/Contents/MacOS/blender
-            \ -P % -- <args>
 
 "Auto commands
 augroup hovagroup
