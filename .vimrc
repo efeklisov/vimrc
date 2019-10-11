@@ -130,7 +130,7 @@ Plug 'easymotion/vim-easymotion'
 Plug 'mhinz/vim-startify'
 Plug 'OmniSharp/omnisharp-vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'patstockwell/vim-monokai-tasty'
+Plug 'Hovushka/vim-monokai-tasty'
 call plug#end()
 
 "Omnisharp
