@@ -126,6 +126,7 @@ Plug 'Hovushka/vim-monokai-tasty'
 Plug 'jceb/vim-orgmode'
 Plug 'tmsvg/pear-tree'
 Plug 'tpope/vim-repeat'
+Plug 'ajh17/VimCompletesMe'
 " Plug 'lyokha/vim-xkbswitch'
 call plug#end()
 
@@ -143,18 +144,6 @@ let g:OmniSharp_server_stdio = 1
 
 "COC-extensions
 let g:coc_global_extensions=[ 'coc-omnisharp', 'coc-python' , 'coc-ccls', 'coc-highlight' ]
-
-"COC-tab
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
 
 "COC-snippets
 inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() :
