@@ -74,8 +74,9 @@ set smartcase
 
 "Folding
 set foldnestmax=10
-set nofoldenable
 set foldlevel=2
+set nofoldenable
+set foldlevelstart=0
 
 "More CLI
 set t_Co=256
@@ -108,6 +109,7 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'elzr/vim-json'
 Plug 'vim-scripts/greplace.vim'
+Plug 'rking/ag.vim'
 Plug 'lervag/vimtex'
 Plug 'jpalardy/vim-slime'
 Plug 'shime/vim-livedown'
@@ -127,6 +129,8 @@ Plug 'jceb/vim-orgmode'
 Plug 'tmsvg/pear-tree'
 Plug 'tpope/vim-repeat'
 Plug 'ajh17/VimCompletesMe'
+Plug 'dense-analysis/ale'
+Plug 'octol/vim-cpp-enhanced-highlight'
 " Plug 'lyokha/vim-xkbswitch'
 call plug#end()
 
@@ -138,6 +142,13 @@ let g:pear_tree_smart_backspace = 1
 
 "NERDTree
 let g:webdevicons_conceal_nerdtree_brackets=0
+
+"ALE
+" let g:ale_python_pylint_options = "--load-plugins=pylint_tensorflow --disable=C"
+let g:ale_python_pylint_options = "--ignored-modules=tensorflow.keras --disable=C,R,E1136"
+let g:ale_glsl_glslang_options = "-V -o shaders/.lint.spv"
+" let g:ale_cpp_clang_options = '-std=c++17 -Wall -Wno-unused-const-variable -Wno-unused-function'
+let g:ale_linters = {'cpp': ['']}
 
 "Omnisharp
 let g:OmniSharp_server_stdio = 1
@@ -173,7 +184,7 @@ let g:lightline = {
             \       'lang': 'MyLangShower',
             \     },
             \ 'component': {
-            \       'lineinfo': "%1{line('.') . '/' . line('$')}:%-1v",
+            \       'lineinfo': "ÓÇ°%1{line('.') . '/' . line('$')}:%-1v",
             \     },
             \ }
 
@@ -192,10 +203,10 @@ let g:lightline.inactive = {
             \ 'right': [ [ 'lineinfo' ] ] }
 
 let g:lightline.separator = {
-            \   'left': '', 'right': ''
+            \   'left': 'ÓÇ∞', 'right': 'ÓÇ≤'
             \}
 let g:lightline.subseparator = {
-            \   'left': '', 'right': ''
+            \   'left': 'ÓÇ±', 'right': 'ÓÇ≥'
             \}
 
 "Lightline-custom-section
@@ -250,6 +261,10 @@ vnoremap <Down> gj
 nnoremap <Up> gk
 nnoremap <Down> gj
 
+nnoremap <C-a> <C-o>
+nnoremap <C-s> <C-i>
+nnoremap <C-q> <C-]>
+
 "Space bindings
 nnoremap <Space>a ggVG
 vnoremap <Space>c "+y
@@ -262,18 +277,17 @@ nnoremap <Space>u :PlugUpdate<CR>
 nnoremap <Space>m :LivedownToggle<CR>
 nnoremap <Space>j :call jupyter#Connect()<CR>
 
-nnoremap <Space>e :e ~/.vimrc<CR>
-nnoremap <Space>w :source ~/.vimrc<CR>
+nnoremap <Space>e :e ~/.config/nvim/init.vim<CR>
+nnoremap <Space>w :source ~/.config/nvim/init.vim<CR>
             \:echom "~/.vimrc is sourced"<CR>
 
 nnoremap <Space>o :copen<CR>
 nnoremap <Space>l :lopen<CR>
-nnoremap <Silent> <Space>q :q!<CR>
 
 "Function bindings
-nnoremap <silent> <F1> :NERDTreeToggle<CR>
-nnoremap <F2> :w !sudo tee % <CR>
-            \:echom "forced changes to the file" <CR>
+nnoremap <silent> <F2> :NERDTreeToggle<CR>
+" nnoremap <F2> :w !sudo tee % <CR>
+"             \:echom "forced changes to the file" <CR>
 nnoremap <F3> :AsyncRun ctags -R<CR>
 nnoremap <F4> :Autoformat<CR>
 nnoremap <F5> :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar> :nohl <Bar> :unlet _s <CR>
@@ -316,4 +330,5 @@ augroup hovagroup
         autocmd TermOpen * startinsert
     endif
     autocmd VimEnter * echom ">^.^< : config by Hova"
+    " autocmd FileType cpp,c source ~/.vim/syntax/vulkan.vim
 augroup END
