@@ -1,7 +1,11 @@
-# vimrc
-My `~/.vimrc` file. It has some Mac-specific setting that can be easily removed. It now supports NeoVim as well!
-# usage
-1) Copy the file to your system
-2) Run Vim
+# .vimrc
+My `~/.vimrc` and `~/.config/nvim/init.vim` file. The first one has some Mac-specific setting that can be easily removed. Both support NeoVim, but the latter requires NeoVim 0.5 features.
 
-* you can install [vim-plug](https://github.com/junegunn/vim-plug) manually beforehand
+# Usage
+You need to install [vim-plug](https://github.com/junegunn/vim-plug) manually beforehand, as well as neovim API packages for NodeJS and Python. Then:
+
+1) Copy the file to your system.
+2) Run Vim.
+
+# DISCLAIMER
+If you've come here from any of [these posts](https://habr.com/ru/users/hovushka/posts/), search for the relevant version of the config in the commit history.
