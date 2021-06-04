@@ -12,14 +12,15 @@ call plug#begin(stdpath('data') . '/plugged')
     Plug 'junegunn/fzf.vim'
     Plug 'mhinz/vim-startify'
     Plug 'tikhomirov/vim-glsl'
-    Plug 'jesseleite/vim-noh'
+    " Plug 'jesseleite/vim-noh'
     Plug 'tmsvg/pear-tree'
     Plug 'itchyny/lightline.vim'
+    Plug 'josa42/vim-lightline-coc'
 
     "Before v0.5
-    "Plug 'luochen1990/rainbow'
-    "Plug 'jackguo380/vim-lsp-cxx-highlight'
-    "Plug 'rrethy/vim-hexokinase', { 'do': 'make hexokinase' }
+    " Plug 'luochen1990/rainbow'
+    " Plug 'jackguo380/vim-lsp-cxx-highlight'
+    " Plug 'rrethy/vim-hexokinase', { 'do': 'make hexokinase' }
 
     "New Era
     Plug 'norcalli/nvim-colorizer.lua'
@@ -49,6 +50,7 @@ set expandtab			"Tabs are spaces now
 set shiftwidth=4		"Visible width of a tab
 set softtabstop=4		"Amount of spaces in a tab
 set number relativenumber	"Relative line numbers with absolute current
+" set signcolumn=number         "Doesn't work
 set nowrap linebreak nolist	"Break lines by words
 set showtabline=0		"Hide buffer list on top
 set cursorline			"Highlight current line
@@ -83,10 +85,12 @@ vnoremap <Up> gk
 vnoremap <Down> gj
 "Copy text. Do NOT map <Esc> to anything if you use it
 vnoremap <C-c> "+y
+vnoremap <Space>c "+y
 "Select whole text
 nnoremap <Space>a ggVG
 "Save file
 nnoremap <Space>s :w<CR>
+nnoremap <C-s> :w<CR>
 "Edit config
 nnoremap <Space>e :e ~/.config/nvim/init.vim<CR>
 "Source config
@@ -106,7 +110,7 @@ nnoremap <silent> <Space>h :noh<CR>
 augroup basicgroup
 	autocmd!
 	autocmd BufRead * normal zR 				"Open file unfolded, but doesn't work consistently
-	autocmd FileType c,cpp setlocal equalprg=clang-format	"gg=G uses clang-format
+	"autocmd FileType c,cpp setlocal equalprg=clang-format	"gg=G uses clang-format
         autocmd TermOpen * startinsert                          "Start terminal in insert mode
 augroup END
 
@@ -140,7 +144,7 @@ lua require'colorizer'.setup()
 "TreeSitter
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = {"c", "cpp", "python", "lua"},
+  ensure_installed = {"c", "cpp", "python", "lua", "rust"},
   highlight = {
     enable = true,
   },
@@ -160,8 +164,8 @@ let g:lightline.active = {
             \ 'left': [ [ 'mode', 'paste' ],
             \           [ 'readonly', 'filename', 'modified' ],
             \            ],
-            \ 'right': [ [ ],
-            \            [ 'lineinfo' ],
+            \ 'right': [ [  'coc_info', 'coc_hints', 'coc_errors', 'coc_warnings', 'coc_ok' ], 
+            \            [ 'coc_status'], ['lineinfo' ],
             \             ]
             \ }
 
@@ -175,6 +179,13 @@ let g:lightline.separator = {
 let g:lightline.subseparator = {
             \   'left': '', 'right': ''
             \}
+
+let g:lightline#coc#indicator_warnings = "WAR:"
+let g:lightline#coc#indicator_errors = "ERR:"
+let g:lightline#coc#indicator_info = "INF:"
+let g:lightline#coc#indicator_hints = "HIN:"
+let g:lightline#coc#indicator_ok = "OK"
+call lightline#coc#register()
 
 "COC-NVIM
 "Tab completion
@@ -241,7 +252,8 @@ command! -nargs=0 Format :call CocAction('format')
 nnoremap <silent> <F2> :CocCommand explorer --width 30 --toggle --focus --quit-on-open<CR>
 
 "Installed extensions
-let g:coc_global_extensions=[ 'coc-python' , 'coc-json', 'coc-clangd', 'coc-vimlsp', 'coc-explorer', 'coc-cmake' ]
+let g:coc_global_extensions=[ 'coc-rust-analyzer', 'coc-pyright' , 'coc-json', 
+            \   'coc-clangd', 'coc-vimlsp', 'coc-explorer', 'coc-cmake' ]
 
 augroup plugingroup
     autocmd!

@@ -19,7 +19,7 @@ pip install neovim
 npm install -g neovim # Fix priviliges before this
 ```
 
-### Fix priviliges for npm
+### Fix priviliges for npm on Linux
 ```bash
 mkdir ~/.cache/npm-global
 npm config set prefix '~/.cache/npm-global'
@@ -43,8 +43,10 @@ sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.
 - nodejs
 - nmp
 
-## C/C++ Language Server
-- clang // to get clangd clang-format
+Note that all language servers with a COC extension can be auto-installed on first run
+
+## C/C++
+~~- clang // to get clangd clang-format~~
 - compiledb (AUR) // to get for the project compile_commands.json
 
 For example: 
@@ -53,12 +55,10 @@ alias make='compiledb make -j 16 && mv --force compile_commands.json ..'
 ```
 
 ## Python Language Server
-- python-pylint
+~~- pyright~~
 
 ## Vimscript Language Server
-```bash
-npm install -g vim-language-server
-```
+~~npm install -g vim-language-server~~
 
 # Ag
 - fzf
